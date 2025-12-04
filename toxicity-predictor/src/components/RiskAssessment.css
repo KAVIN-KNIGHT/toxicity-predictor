@@ -1,0 +1,77 @@
+.risk-assessment {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  margin-bottom: 25px;
+}
+
+.risk-assessment h2 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.5em;
+  border-bottom: 3px solid #667eea;
+  padding-bottom: 10px;
+}
+
+.risk-content {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.risk-badge {
+  padding: 25px 40px;
+  border-radius: 12px;
+  color: white;
+  font-size: 1.8em;
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  letter-spacing: 1px;
+}
+
+.risk-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-width: 250px;
+}
+
+.risk-explanation {
+  padding: 15px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 8px;
+  margin-bottom: 5px;
+}
+
+.explanation-text {
+  font-size: 1.05em;
+  color: white;
+  font-weight: 600;
+  display: block;
+  text-align: center;
+}
+
+.risk-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.stat-label {
+  font-size: 0.95em;
+  color: #555;
+  font-weight: 600;
+}
+
+.stat-value {
+  font-size: 1.2em;
+  color: #667eea;
+  font-weight: 700;
+}

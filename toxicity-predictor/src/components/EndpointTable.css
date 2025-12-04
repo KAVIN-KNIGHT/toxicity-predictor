@@ -1,0 +1,82 @@
+.endpoint-table-container {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  margin-bottom: 25px;
+}
+
+.endpoint-table-container h2 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.5em;
+  border-bottom: 3px solid #667eea;
+  padding-bottom: 10px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.endpoint-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95em;
+}
+
+.endpoint-table thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.endpoint-table th {
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.endpoint-table tbody tr {
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s;
+}
+
+.endpoint-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.endpoint-table tbody tr.toxic-row {
+  background-color: #fef2f2;
+}
+
+.endpoint-table td {
+  padding: 12px 15px;
+}
+
+.endpoint-name {
+  font-weight: 600;
+  color: #333;
+}
+
+.prediction {
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.prediction.toxic {
+  color: #dc2626;
+}
+
+.prediction.non-toxic {
+  color: #16a34a;
+}
+
+.probability {
+  font-weight: 600;
+  color: #667eea;
+}
+
+.risk-level {
+  font-weight: 600;
+  color: #555;
+}
