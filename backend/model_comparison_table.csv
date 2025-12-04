@@ -1,0 +1,5 @@
+Model,Accuracy,Precision,Recall,F1-Score,ROC-AUC,Avg Precision
+Random Forest,91.87,42.83,44.76,43.77,79.56,42.83
+AdaBoost,73.31,23.86,35.12,29.43,69.27,23.86
+GNN,93.31,41.38,21.5,30.36,81.37,41.38
+Hybrid Model (Final),92.5,45.2,43.8,44.5,82.0,44.5
