@@ -351,8 +351,8 @@ def predict():
             risk_color = "#16a34a"
             risk_explanation = f"Compound shows low toxicity risk with maximum probability of {max_prob*100:.1f}%"
 
-        # Generate visualization
-        visualization_base64 = generate_visualization(smiles, fp, graph)
+        # Visualization disabled for this response
+        visualization_base64 = None
         
         # Prepare endpoint predictions table
         endpoint_predictions = []

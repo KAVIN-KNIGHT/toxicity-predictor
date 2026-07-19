@@ -2,6 +2,10 @@ import React from 'react';
 import './Visualization.css';
 
 function Visualization({ visualization, compoundName }) {
+  if (!visualization) {
+    return null;
+  }
+
   return (
     <div className="visualization-container">
       <h2>Molecular Analysis - {compoundName}</h2>

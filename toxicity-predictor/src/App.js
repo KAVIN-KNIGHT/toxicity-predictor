@@ -64,7 +64,9 @@ function App() {
             <MolecularProperties properties={result.molecular_properties} compoundName={result.compound_name} />
             <RiskAssessment assessment={result.overall_assessment} />
             <EndpointTable predictions={result.endpoint_predictions} />
-            <Visualization visualization={result.visualization} compoundName={result.compound_name} />
+            {result.visualization && (
+              <Visualization visualization={result.visualization} compoundName={result.compound_name} />
+            )}
           </div>
         )}
       </main>
