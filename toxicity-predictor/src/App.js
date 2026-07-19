@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import './App.css';
 import PredictionForm from './components/PredictionForm';
 import MolecularProperties from './components/MolecularProperties';
 import RiskAssessment from './components/RiskAssessment';
 import EndpointTable from './components/EndpointTable';
 import Visualization from './components/Visualization';
-
-const API_URL = 'http://localhost:5000/api';
+import { predictToxicity, formatApiError } from './api';
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -20,24 +18,18 @@ function App() {
     setResult(null);
 
     try {
-      const response = await axios.post(`${API_URL}/predict`, {
-        smiles: smiles,
-        compound_name: compoundName
+      const data = await predictToxicity({
+        smiles,
+        compoundName
       });
 
-      if (response.data.success) {
-        setResult(response.data);
+      if (data.success) {
+        setResult(data);
       } else {
-        setError(response.data.error || 'Prediction failed');
+        setError(data.error || 'Prediction failed');
       }
     } catch (err) {
-      if (err.response) {
-        setError(err.response.data.error || 'Server error');
-      } else if (err.request) {
-        setError('Cannot connect to API server. Make sure Flask server is running at http://localhost:5000');
-      } else {
-        setError(err.message);
-      }
+      setError(formatApiError(err));
     } finally {
       setLoading(false);
     }
