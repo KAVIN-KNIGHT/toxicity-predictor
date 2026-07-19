@@ -217,25 +217,42 @@ def generate_visualization(smiles, fp, graph):
     return img_base64
 
 def load_models():
-    """Load all models on startup"""
     global model_dict, gnn_model
-    
+
     try:
         BASE_DIR = Path(__file__).resolve().parent
         MODEL_PATH = BASE_DIR / "FinalModel.pkl"
         model_dict = joblib.load(MODEL_PATH)
-        # Initialize GNN model
+
         sample_graph = smiles_to_graph("CCO")
         in_dim = sample_graph.x.shape[1]
-        gnn_model = MultiLabelGIN(in_dim=in_dim, hidden_dim=160, num_layers=5, num_tasks=len(ENDPOINTS))
-        gnn_model.load_state_dict(model_dict['gnn_state_dict'])
+
+        gnn_model = MultiLabelGIN(
+            in_dim=in_dim,
+            hidden_dim=160,
+            num_layers=5,
+            num_tasks=len(ENDPOINTS)
+        )
+
+        gnn_model.load_state_dict(model_dict["gnn_state_dict"])
         gnn_model.eval()
-        
+
         print("✅ Models loaded successfully!")
         return True
+
     except Exception as e:
         print(f"❌ Error loading models: {e}")
         return False
+
+
+# ---------------------------
+# OUTSIDE THE FUNCTION
+# ---------------------------
+
+print("Loading models...")
+
+if not load_models():
+    raise RuntimeError("Failed to load models")
 
 @app.route('/api/health', methods=['GET'])
 def health_check():
@@ -460,15 +477,11 @@ def batch_predict():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    print("Loading models...")
-    if load_models():
-        print("\n🚀 Starting Flask API server...")
-        print("API will be available at http://localhost:5000")
-        print("\nEndpoints:")
-        print("  GET  /api/health        - Health check")
-        print("  POST /api/predict       - Single compound prediction")
-        print("  POST /api/batch-predict - Batch prediction")
-        port = int(os.environ.get("PORT", 5000))
-        app.run(host="0.0.0.0", port=port, debug=False)
-    else:
-        print("❌ Failed to load models. Please ensure FinalModel.pkl exists.")
+    print("\n🚀 Starting Flask API server...")
+    print("API will be available at http://localhost:5000")
+    print("\nEndpoints:")
+    print("  GET  /api/health        - Health check")
+    print("  POST /api/predict       - Single compound prediction")
+    print("  POST /api/batch-predict - Batch prediction")
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=False)
