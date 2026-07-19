@@ -21,6 +21,8 @@ import networkx as nx
 import io
 import base64
 import warnings
+import os
+from pathlib import Path
 warnings.filterwarnings('ignore')
 
 app = Flask(__name__)
@@ -219,8 +221,9 @@ def load_models():
     global model_dict, gnn_model
     
     try:
-        model_dict = joblib.load(r"C:\Users\admin\Desktop\Toxicity prediction\backend\FinalModel.pkl")
-        
+        BASE_DIR = Path(__file__).resolve().parent
+        MODEL_PATH = BASE_DIR / "FinalModel.pkl"
+        model_dict = joblib.load(MODEL_PATH)
         # Initialize GNN model
         sample_graph = smiles_to_graph("CCO")
         in_dim = sample_graph.x.shape[1]
@@ -465,6 +468,7 @@ if __name__ == '__main__':
         print("  GET  /api/health        - Health check")
         print("  POST /api/predict       - Single compound prediction")
         print("  POST /api/batch-predict - Batch prediction")
-        app.run(debug=True, host='0.0.0.0', port=5000)
+        port = int(os.environ.get("PORT", 5000))
+        app.run(host="0.0.0.0", port=port, debug=False)
     else:
         print("❌ Failed to load models. Please ensure FinalModel.pkl exists.")
