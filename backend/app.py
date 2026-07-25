@@ -158,8 +158,25 @@ def generate_visualization(smiles, fp, graph):
     
     # 1. Molecular Structure
     ax1 = plt.subplot(1, 3, 1)
-    img = Draw.MolToImage(mol, size=(400, 400))
-    ax1.imshow(img)
+    try:
+        img = Draw.MolToImage(mol, size=(400, 400))
+        ax1.imshow(img)
+    except Exception:
+        from rdkit.Chem import rdDepictor
+        mol_copy = Chem.Mol(mol)
+        rdDepictor.Compute2DCoords(mol_copy)
+        conf = mol_copy.GetConformer()
+        for bond in mol_copy.GetBonds():
+            p1 = conf.GetAtomPosition(bond.GetBeginAtomIdx())
+            p2 = conf.GetAtomPosition(bond.GetEndAtomIdx())
+            ax1.plot([p1.x, p2.x], [p1.y, p2.y], 'k-', lw=2.5, zorder=1)
+        for atom in mol_copy.GetAtoms():
+            pos = conf.GetAtomPosition(atom.GetIdx())
+            symbol = atom.GetSymbol()
+            if symbol != 'C':
+                ax1.text(pos.x, pos.y, symbol, fontsize=12, fontweight='bold',
+                         ha='center', va='center',
+                         bbox=dict(boxstyle='square,pad=0.15', facecolor='white', edgecolor='none'), zorder=2)
     ax1.axis('off')
     ax1.set_title(f'Molecular Structure\n{formula} (MW: {mol_weight:.2f})', fontsize=12, fontweight='bold')
     
@@ -237,11 +254,11 @@ def load_models():
         gnn_model.load_state_dict(model_dict["gnn_state_dict"])
         gnn_model.eval()
 
-        print("✅ Models loaded successfully!")
+        print("[OK] Models loaded successfully!")
         return True
 
     except Exception as e:
-        print(f"❌ Error loading models: {e}")
+        print(f"[ERROR] Error loading models: {e}")
         return False
 
 
@@ -351,8 +368,8 @@ def predict():
             risk_color = "#16a34a"
             risk_explanation = f"Compound shows low toxicity risk with maximum probability of {max_prob*100:.1f}%"
 
-        # Visualization disabled for this response
-        visualization_base64 = None
+        # Generate molecular visualization
+        visualization_base64 = generate_visualization(smiles, fp, graph)
         
         # Prepare endpoint predictions table
         endpoint_predictions = []
@@ -477,7 +494,7 @@ def batch_predict():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    print("\n🚀 Starting Flask API server...")
+    print("\nStarting Flask API server...")
     print("API will be available at http://localhost:5000")
     print("\nEndpoints:")
     print("  GET  /api/health        - Health check")
